@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div>
+    {% if user.is_authenticated %}
+    <h2>
+        START PAGE
+    </h2>
+    {% else %}
+    <h2>
+        ВЫ НЕ АВТОРИЗОВАНЫ
+    </h2>
+    <a href="accounts/login/">АВТОРИЗОВАТЬСЯ</a>
+    {% endif %}
+</div>
+</body>
+</html>

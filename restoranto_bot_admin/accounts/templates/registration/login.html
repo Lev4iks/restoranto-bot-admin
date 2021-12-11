@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% extends 'accounts/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block main %}
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">Log in to your account</h4>
+
+        <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{{ next }}">
+
+            {{ form|crispy }}
+
+            <button type="submit" class="btn btn-primary btn-block">Войти</button>
+            <p class="message">Не зарегистрированы ? <a href="{% url 'accounts:signup' %}">Создать аккаунт</a></p>
+        </form>
+    </div>
+</div>
+{% endblock %}
+</body>
+</html>
