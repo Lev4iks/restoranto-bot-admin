@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div>
+    {% if user.is_authenticated %}
+    <div class="main-box">
+        <h2>Enter a room with your username</h2>
+        <form>
+            <div class="input-field">
+                <label>Название ресторана</label>
+                <input type="text" id="restaurant-name-input">
+            </div>
+            <div class="input-field">
+                <label>Адрес ресторана</label>
+                <input type="text" id="restaurant-address-input">
+            </div>
+            <div class="input-field">
+                <label>Описание</label>
+                <input type="text" id="description">
+            </div>
+            <form method="post" >
+                {% csrf_token %}
+                <input type="button" value="Доавить ресторан" id="submit">
+            </form>
+        </form>
+    </div>
+    {% else %}
+    <h2>
+        ВЫ НЕ АВТОРИЗОВАНЫ
+    </h2>
+
+    <a href="accounts/login/">АВТОРИЗОВАТЬСЯ</a>
+    {% endif %}
+</div>
+<script>
+    document.querySelector('#submit').onclick = function(e)  {
+        console.log("START");
+        var name = document.querySelector('#restaurant-name-input').value;
+        var address = document.querySelector('#restaurant-address-input').value;
+        var description = document.querySelector('#description').value;
+        if (name === '' && address === ''){
+            window.alert("Нужно заполнить поля : имя и адрес");
+        }
+        else {
+            data = new FormData()
+            data.set('name', name)
+            data.set('address', address)
+            data.set('description', description)
+            data.set('csrfmiddlewaretoken', '{{ csrf_token }}')
+
+            let request = new XMLHttpRequest();
+            request.open("POST", 'http://127.0.0.1:8000/administration/add_info/', true);
+            request.send(data)
+
+            window.location.replace('http://127.0.0.1:8000/administration/');
+        }
+
+
+        console.log("END");
+}
+
+
+</script>
+</body>
+</html>

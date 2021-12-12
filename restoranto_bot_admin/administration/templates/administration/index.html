@@ -7,6 +7,14 @@
 <body>
 <div>
     {% if user.is_authenticated %}
+        {% if restaurant %}
+            <h2>Ваш ресторан : {{ restaurant.name }}</h2>
+
+        {% else %}
+        <a href="{% url 'administration:add_restaurant' %}">
+            ДОБАВИТЬ РЕСТОРАН
+        </a>
+        {% endif %}
     <h2>
         START PAGE
     </h2>
@@ -14,7 +22,7 @@
     <h2>
         ВЫ НЕ АВТОРИЗОВАНЫ
     </h2>
-    <a href="accounts/login/">АВТОРИЗОВАТЬСЯ</a>
+    <a href="{% url 'accounts:login' %}">АВТОРИЗОВАТЬСЯ</a>
     {% endif %}
 </div>
 </body>
