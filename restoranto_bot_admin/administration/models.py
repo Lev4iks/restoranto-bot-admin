@@ -9,3 +9,12 @@ class Restaurant(models.Model):
 
     class Meta:
         db_table = 'restaurant'
+
+
+class Table(models.Model):
+    auth = models.CharField(max_length=64, default="test")
+    login = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, unique=True)
+
+    class Meta:
+        db_table = 'table'

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'administration/style.css' %}">
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div>
+    {% if user.is_authenticated %}
+    <h2>Ваш ресторан : {{ restaurant.name }}</h2>
+    <div>
+            <form method="post">
+                {% csrf_token %}
+                <button class="btn" id="get-tables">
+                    Получить столики
+                </button>
+            </form>
+
+    </div>
+
+    <h2>
+        START PAGE
+    </h2>
+    {% else %}
+    <h2>
+        ВЫ НЕ АВТОРИЗОВАНЫ
+    </h2>
+    <a href="{% url 'accounts:login' %}">АВТОРИЗОВАТЬСЯ</a>
+    {% endif %}
+</div>
+</body>
+<script>
+    document.querySelector('#get-tables').onclick = function(e)  {
+        console.log("START");
+
+        data = new FormData()
+        data.set('auth', "test")
+        data.set('name', "vladimmir")
+        data.set('login', "test")
+        data.set('csrfmiddlewaretoken', '{{ csrf_token }}')
+
+        let request = new XMLHttpRequest();
+        request.open("POST", 'http://91.122.61.223:3000/get_tables', true);
+        request.send(data)
+
+        request.onload = function() {
+          var data = JSON.parse(this.responseText);
+          console.log(data);
+
+
+
+        }
+
+
+        console.log("END");
+    }
+
+
+</script>
+</html>

@@ -1,20 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'administration/style.css' %}">
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
 <div>
     {% if user.is_authenticated %}
-        {% if restaurant %}
-            <h2>Ваш ресторан : {{ restaurant.name }}</h2>
+    {% if restaurant %}
+    <h2>Ваш ресторан : {{ restaurant.name }}</h2>
+    <div>
+        <form method="post">
+            {% csrf_token %}
+            <button class="btn" id="add-table">
+                Добавить столик
+            </button>
 
-        {% else %}
-        <a href="{% url 'administration:add_restaurant' %}">
-            ДОБАВИТЬ РЕСТОРАН
-        </a>
-        {% endif %}
+            <div class="input-field">
+                <label>Имя столика</label>
+                <input type="text" id="table-name">
+            </div>
+            <form method="post">
+                {% csrf_token %}
+                <button class="btn" id="get-tables">
+                    Получить столики
+                </button>
+            </form>
+            <div>
+
+            </div>
+
+        </form>
+    </div>
+
+    {% else %}
+    <a href="{% url 'administration:add_restaurant' %}">
+        ДОБАВИТЬ РЕСТОРАН
+    </a>
+    {% endif %}
     <h2>
         START PAGE
     </h2>
@@ -26,4 +51,66 @@
     {% endif %}
 </div>
 </body>
+<script>
+    document.querySelector('#add-table').onclick = function(e)  {
+        console.log("START");
+        var name = document.querySelector('#table-name').value;
+        if (name === ''){
+            window.alert("Нужно заполнить полe : имя");
+        }
+        else {
+            data = new FormData()
+            data.set('name', name)
+            data.set('csrfmiddlewaretoken', '{{ csrf_token }}')
+
+            let request = new XMLHttpRequest();
+            request.open("POST", 'http://127.0.0.1:8000/administration/add_table/', true);
+            request.send(data)
+
+            request.onload = function() {
+              var data = JSON.parse(this.responseText);
+              if (data = 500) {
+                window.alert("Такое имя столика уже сть !");
+              }
+}
+
+
+        }
+
+
+        console.log("END");
+    }
+    document.querySelector('#get-tables').onclick = function(e)  {
+        console.log("START");
+
+        if (name === ''){
+            window.alert("Нужно заполнить полe : имя");
+        }
+        else {
+            data = new FormData()
+            data.set('auth', "test")
+            data.set('name', "vladimmir")
+            data.set('login', "test")
+            data.set('csrfmiddlewaretoken', '{{ csrf_token }}')
+
+            let request = new XMLHttpRequest();
+            request.open("POST", 'http://91.122.61.223:3000/get_tables', true);
+            request.send(data)
+
+            request.onload = function() {
+              var data = JSON.parse(this.responseText);
+              if (data = 500) {
+                window.alert("Такое имя столика уже сть !");
+              }
+        }
+
+
+        }
+
+
+        console.log("END");
+    }
+
+
+</script>
 </html>
